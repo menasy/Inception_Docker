@@ -1,0 +1,88 @@
+version: '3.1'
+
+services:
+  nginx:
+    build:
+      context: ./requirements/nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_files:/var/www/html
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
+    networks:
+      - my_network
+    depends_on:
+      - wordpress
+    restart: always
+
+  mariadb:
+    build:
+      context: ./requirements/mariadb
+    container_name: mariadb
+    expose:
+      - "3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: /run/secrets/db_user
+      MYSQL_ROOT_PASSWORD: run/secrets/db_root_password
+      MYSQL_PASSWORD: /run/secrets/db_password
+    secrets:
+      - db_root_password
+      - db_user
+      - db_password
+    networks:
+      - my_network
+    restart: always
+
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+    container_name: wordpress
+    expose:
+      - "9000"
+    volumes:
+      - wordpress_files:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: ${DB_HOST}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_DB_USER: /run/secrets/db_user
+      WORDPRESS_DB_PASSWORD: /run/secrets/db_password
+    secrets:
+      - db_user
+      - db_password
+      - db_root_password
+    depends_on:
+      - mariadb
+    networks:
+      - my_network
+    restart: always
+
+secrets:
+  db_user:
+    file: ../secrets/credentials.txt
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  db_password:
+    file: ../secrets/db_password.txt
+
+networks:
+  my_network:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/user/data/mariadb
+  wordpress_files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/user/data/wordpress
