@@ -1,5 +1,3 @@
-version: '3.1'
-
 services:
   nginx:
     build:
@@ -12,11 +10,13 @@ services:
     environment:
       DOMAIN_NAME: ${DOMAIN_NAME}
     networks:
-      - my_network
+      my_network:
+        ipv4_address: 172.16.238.10
+        ipv6_address: 2001:3984:3989::10
     depends_on:
       - wordpress
     restart: always
-
+    
   mariadb:
     build:
       context: ./requirements/mariadb
@@ -28,16 +28,18 @@ services:
     environment:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: /run/secrets/db_user
-      MYSQL_ROOT_PASSWORD: run/secrets/db_root_password
+      MYSQL_ROOT_PASSWORD: /run/secrets/db_root_password
       MYSQL_PASSWORD: /run/secrets/db_password
     secrets:
       - db_root_password
       - db_user
       - db_password
     networks:
-      - my_network
+      my_network:
+        ipv4_address: 172.16.238.9
+        ipv6_address: 2001:3984:3989::9
     restart: always
-
+    
   wordpress:
     build:
       context: ./requirements/wordpress
@@ -58,7 +60,11 @@ services:
     depends_on:
       - mariadb
     networks:
-      - my_network
+      my_network:
+        ipv4_address: 172.16.238.8
+        ipv6_address: 2001:3984:3989::8
+    extra_hosts:
+      - "${DOMAIN_NAME}:172.16.238.10"
     restart: always
 
 secrets:
@@ -72,6 +78,14 @@ secrets:
 networks:
   my_network:
     driver: bridge
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.238.0/24"
+          gateway: 172.16.238.1
+        - subnet: "2001:3984:3989::/64"
+          gateway: 2001:3984:3989::1
 
 volumes:
   db_data:
