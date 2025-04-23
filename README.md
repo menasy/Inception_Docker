@@ -3,7 +3,7 @@ Docker konteynerleri ile NGINX, WordPress ve MariaDB servislerini içeren bir we
 
 <img src="https://raw.githubusercontent.com/menasy/Project_icons/main/InceptionImages/42ContainerImage.png" alt="42ContainerImage" width="700"/>
 
-> 🚀 **Medium Yazısı:** [Docker / 42 Inception Projesi – Deneyim ve Öğrenim Süreci]()  
+> 🚀 **Medium Yazısı:** [Docker-42 Inception Projesi](https://medium.com/@menasy/docker-42-inception-projesi-484e48ae543c)  
 > 📄 **Dokümantasyon PDF:** [Docker-Inception.pdf](https://github.com/menasy/Inception_Docker/raw/main/Docker-Inception.pdf)
 
 ---
