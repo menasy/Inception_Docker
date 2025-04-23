@@ -1,2 +1,40 @@
-# Inception_Project_DOCKER
-Bu proje Docker ve Docker Compose ile NGINX, WordPress ve MariaDB servislerinden oluşan izole bir web altyapısı kurulmuştur. Mikro servis mimarisine uygun olarak özel bridge ağıyla iletişim sağlanmış, veri kalıcılığı için volume yönetimi uygulanmış ve hassas bilgiler Docker secrets ile korunmuştur.
+# Inception
+
+Docker konteynerleri ile NGINX, WordPress ve MariaDB servislerini içeren bir web altyapısı projesi.
+
+> 🚀 **Medium Yazısı:** [Docker / 42 Inception Projesi – Deneyim ve Öğrenim Süreci]()  
+> 📄 **Dokümantasyon PDF:** [Docker-Inception.pdf](https://github.com/menasy/Inception_Docker/blob/main/Docker-Inception.pdf)
+## Proje Hakkında
+
+Bu proje, 42 eğitim programı kapsamında Docker teknolojisini öğrenmek ve birden fazla servisi bir arada çalıştıran güvenli, ölçeklenebilir bir web altyapısı oluşturmak amacıyla geliştirilmiştir. Servisler arasında iletişimi ve veri kalıcılığını Docker'ın sunduğu araçlarla sağlayan bir mimari içerir.
+
+## İçerik
+
+- **NGINX**: Reverse proxy olarak yapılandırılmış, TLS/SSL sertifikaları ile güvenli bağlantı sağlayan web sunucusu
+- **WordPress + PHP-FPM**: UNIX soketleri üzerinden NGINX ile iletişim kuran WordPress kurulumu 
+- **MariaDB**: WordPress için gerekli veritabanı sunucusu
+- **Docker Compose**: Tüm servisleri tek bir komutla başlatan yapılandırma
+
+## Özellikler
+
+- Docker konteynerleştirme teknolojisi
+- Dockerfile yapılandırması ve optimizasyonu
+- HTTPS protokolü ve güvenli iletişim
+- UNIX soketleri ile servisler arası haberleşme
+- Docker volume'lar ile veri kalıcılığı
+- İzole edilmiş Docker ağı
+
+## Kurulum
+
+```bash
+# Projeyi klonlayın
+git clone https://github.com/menasy/Inception_Docker.git
+cd Inception_Docker
+
+# Sistemi başlatın
+make up
+```
+
+## Kullanım
+
+Web tarayıcınızda `https://localhost` adresine giderek WordPress sitenize erişebilirsiniz.
